@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +36,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate and create a new product
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -39,9 +45,13 @@ class ProductController extends Controller
             'updated_by' => 'nullable|exists:users,id',
         ]);
 
-        $product = Product::create($validatedData);
+        try {
+            $product = $this->productService->createProduct($validatedData);
 
-        return response()->json($product, 201);
+            return response()->json($product, 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
     }
 
     /**
@@ -65,9 +75,8 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        // Validate and update a product
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -77,10 +86,14 @@ class ProductController extends Controller
             'updated_by' => 'nullable|exists:users,id',
         ]);
 
-        $product = Product::findOrFail($id);
-        $product->update($validatedData);
+        try {
+            $product = Product::findOrFail($id);
+            $product = $this->productService->updateProduct($product, $validatedData);
 
-        return response()->json($product);
+            return response()->json($product, 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
     }
 
     /**

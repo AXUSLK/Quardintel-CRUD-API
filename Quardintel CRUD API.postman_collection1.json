@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "482561db-bb8c-4c6c-82bc-3d57140fabd0",
+		"name": "Quardintel CRUD API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24554124"
+	},
+	"item": [
+		{
+			"name": "Create Product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 2|jE0DnZihCB72dyyONL3E6Km4o408hWhPJI7vXuHM9f937d52",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"name\": \"Sample Product\",\r\n        \"description\": \"Product Sample description\",\r\n        \"price\": \"5000.00\",\r\n        \"quantity\": 150,\r\n        \"created_by\": 6,\r\n        \"updated_by\": 6,\r\n        \"created_at\": null,\r\n        \"updated_at\": null\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8888/api/products",
+				"description": "### Create a New Product\n\nThis endpoint allows you to create a new product.\n\n#### Request Body\n\n- `name` (string, required): The name of the product.\n    \n- `description` (string, required): The description of the product.\n    \n- `price` (string, required): The price of the product.\n    \n- `quantity` (number, required): The quantity of the product.\n    \n- `created_by` (number, required): The user ID who created the product.\n    \n- `updated_by` (number, required): The user ID who updated the product.\n    \n- `created_at` (string): The timestamp when the product was created.\n    \n- `updated_at` (string): The timestamp when the product was last updated.\n    \n\n#### Response (201 - Created)\n\nThe response will be in JSON format with the following schema:\n\n``` json\n{    \"type\": \"object\",\n    \"properties\": {\n        \"name\": { \"type\": \"string\" },\n        \"description\": { \"type\": \"string\" },\n        \"price\": { \"type\": \"string\" },\n        \"quantity\": { \"type\": \"number\" },\n        \"created_by\": { \"type\": \"number\" },\n        \"updated_by\": { \"type\": \"number\" },\n        \"created_at\": { \"type\": \"string\" },\n        \"updated_at\": { \"type\": \"string\" },\n        \"id\": { \"type\": \"number\" }\n    }\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 2|jE0DnZihCB72dyyONL3E6Km4o408hWhPJI7vXuHM9f937d52",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8888/api/products/6/purchase",
+				"description": "### Purchase Product\n\nThis endpoint allows the user to purchase a specific product by providing the quantity.\n\n#### Request Body\n\n- `quantity` (number, required): The quantity of the product to be purchased.\n    \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": {\n            \"type\": \"number\"\n        },\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"description\": {\n            \"type\": \"string\"\n        },\n        \"price\": {\n            \"type\": \"string\"\n        },\n        \"quantity\": {\n            \"type\": \"number\"\n        },\n        \"created_by\": {\n            \"type\": \"number\"\n        },\n        \"updated_by\": {\n            \"type\": \"number\"\n        },\n        \"created_at\": {\n            \"type\": \"string\"\n        },\n        \"updated_at\": {\n            \"type\": \"string\"\n        }\n    }\n}\n\n ```"
+			},
+			"response": []
+		}
+	]
+}
